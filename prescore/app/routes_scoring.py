@@ -1,3 +1,28 @@
+from flask import Blueprint, request, jsonify
+from prescore.api.checko.company import get_company_data
+from prescore.api.checko.finances import get_finances
+from prescore.core.stop_factors.stop_factors_engine import check_stop_factors
+
+scoring_bp = Blueprint('scoring', __name__)
+
+@scoring_bp.route('/score', methods=['POST'])
+def score_company():
+    data = request.json
+    inn = data.get("inn")
+
+    if not inn:
+        return jsonify({"error": "ИНН обязателен"}), 400
+
+    company = get_company_data(inn)
+    finances = get_finances(inn)
+    stop_factors = check_stop_factors(company)
+
+    return jsonify({
+        "inn": inn,
+        "company": company,
+        "finances": finances,
+        "stop_factors": stop_factors
+    })
 # prescore/app/routes_upload.py
 import os
 import json
