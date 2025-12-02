@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h2 class="fw-bold">Результаты анализа</h2>
+        <p class="text-muted">Анализ проведен на основе {{ transactions_count }} транзакций за {{ dashboards['Период анализа'] }}</p>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="/" class="btn btn-outline-secondary"><i class="bi bi-arrow-counterclockwise"></i> Новый анализ</a>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <div class="card-body p-4 d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="text-white-50 text-uppercase ls-1">Итоговый балл Prescore</h5>
+                    <h1 class="display-1 fw-bold mb-0">{{ scoringResults.total_score }}<span class="fs-4 text-white-50">/100</span></h1>
+                </div>
+                <div class="text-end">
+                    <h3 class="mb-0">Риск: {{ scoringResults.risk_level }}</h3>
+                    <span class="badge bg-light text-primary mt-2 p-2">Высокая вероятность одобрения</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h4 class="mb-3">Финансовые показатели</h4>
+<div class="row g-3 mb-5">
+    {% for key, value in dashboards.items() %}
+    <div class="col-md-4 col-sm-6">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <small class="text-muted text-uppercase">{{ key }}</small>
+                <h3 class="fw-bold text-primary mt-2">{{ value }}</h3>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-white fw-bold">Детализация рейтинга</div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    {% for key, value in scoringResults.details.items() %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ key }}
+                        <span class="badge bg-primary rounded-pill">{{ value }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card h-100 border-warning" style="border-left: 5px solid #ffc107;">
+            <div class="card-header bg-white fw-bold text-warning">
+                <i class="bi bi-lightbulb-fill"></i> Рекомендации
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    {% for rec in recommendations %}
+                    <li class="mb-3 d-flex">
+                        <i class="bi bi-check-circle-fill text-success me-2 mt-1"></i>
+                        <span>{{ rec }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

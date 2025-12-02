@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: 70vh;">
+    <div class="col-md-6 col-lg-5">
+        <div class="text-center mb-4">
+            <h1 class="fw-bold text-dark">Анализ бизнеса</h1>
+            <p class="text-muted">Загрузите выписку 1С, чтобы получить мгновенный кредитный отчет.</p>
+        </div>
+
+        <div class="card p-4">
+            <div class="card-body">
+                <form action="/upload" method="POST" enctype="multipart/form-data" id="uploadForm">
+                    <div class="upload-area p-5 text-center border rounded-3 bg-light" 
+                         style="border: 2px dashed #ccc; cursor: pointer;"
+                         onclick="document.getElementById('fileInput').click()">
+                        <i class="bi bi-cloud-arrow-up-fill text-primary display-4"></i>
+                        <h5 class="mt-3">Нажмите для загрузки</h5>
+                        <p class="small text-muted mb-0">или перетащите файл сюда (.txt)</p>
+                    </div>
+
+                    <input type="file" name="file" id="fileInput" accept=".txt" class="d-none" required>
+                    
+                    <div id="fileName" class="mt-3 text-center text-success fw-bold d-none">
+                        <i class="bi bi-file-earmark-text"></i> <span id="nameText"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 mt-4 fw-bold" id="submitBtn" disabled>
+                        Анализировать выписку
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="text-center mt-3">
+            <a href="#" class="text-decoration-none small text-muted"><i class="bi bi-lock"></i> Ваши данные в безопасности</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const fileInput = document.getElementById('fileInput');
+    const fileNameDiv = document.getElementById('fileName');
+    const nameText = document.getElementById('nameText');
+    const submitBtn = document.getElementById('submitBtn');
+
+    fileInput.addEventListener('change', function() {
+        if (this.files && this.files.length > 0) {
+            fileNameDiv.classList.remove('d-none');
+            nameText.textContent = this.files[0].name;
+            submitBtn.disabled = false;
+        }
+    });
+</script>
+{% endblock %}
