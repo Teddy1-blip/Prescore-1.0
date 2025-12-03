@@ -11,6 +11,60 @@
     </div>
 </div>
 
+<!-- 👉 Новый блок: Информация о компании -->
+{% if inn %}
+<div class="card mb-4">
+    <div class="card-header bg-white fw-bold">
+        <i class="bi bi-building text-primary"></i> Информация о компании
+    </div>
+    <div class="card-body">
+        <div class="row g-3">
+
+            <div class="col-md-4">
+                <strong>ИНН:</strong><br>
+                <span class="text-primary">{{ inn }}</span>
+            </div>
+
+            <div class="col-md-4">
+                <strong>Название:</strong><br>
+                <span>{{ company.name if company and company.name else "Не найдено" }}</span>
+            </div>
+
+            <div class="col-md-4">
+                <strong>ОГРН:</strong><br>
+                <span>{{ company.ogrn if company and company.ogrn else "Не найдено" }}</span>
+            </div>
+
+            <div class="col-md-4">
+                <strong>Статус:</strong><br>
+                <span class="badge bg-success" if company and company.status == "Действующая" else "badge bg-danger">
+                    {{ company.status if company else "Не найдено" }}
+                </span>
+            </div>
+
+            <div class="col-md-4">
+                <strong>Дата регистрации:</strong><br>
+                <span>{{ company.registration_date if company else "Нет данных" }}</span>
+            </div>
+
+        </div>
+
+        <!-- 👉 Стоп-факторы -->
+        {% if stop_factors %}
+        <div class="mt-4">
+            <h6 class="fw-bold text-danger"><i class="bi bi-exclamation-triangle-fill"></i> Стоп-факторы:</h6>
+            <ul class="text-danger">
+                {% for sf in stop_factors %}
+                <li>{{ sf }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+<!-- Конец нового блока -->
+
 <div class="row mb-4">
     <div class="col-12">
         <div class="card text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
